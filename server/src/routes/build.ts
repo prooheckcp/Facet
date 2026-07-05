@@ -3,7 +3,7 @@ import path from "path";
 import { Router } from "express";
 import { v4 as uuid } from "uuid";
 import { DATA_DIR, readDb, writeDb } from "../db.js";
-import { generateSite, improvePrompt, placeholderHtml } from "../services/openai.js";
+import { generateSite, improvePrompt, placeholderHtml, refineSite } from "../services/openai.js";
 import type { GeneratedApp } from "../types.js";
 
 export const buildRouter = Router();
@@ -76,6 +76,44 @@ buildRouter.post("/build", async (req, res) => {
   writeDb(db);
 
   res.status(201).json(record);
+});
+
+// Modify an existing build in place: send the current files + a change request
+// to the model and overwrite the build's files with the updated set.
+buildRouter.post("/generated/:id/refine", async (req, res) => {
+  const { prompt } = req.body as { prompt?: string };
+  if (!prompt || !prompt.trim()) {
+    return res.status(400).json({ error: "prompt is required" });
+  }
+
+  const db = readDb();
+  const record = db.generatedApps.find((g) => g.id === req.params.id);
+  if (!record) return res.status(404).json({ error: "Build not found" });
+  const app = db.applications.find((a) => a.id === record.applicationId);
+  if (!app) return res.status(404).json({ error: "Application not found" });
+
+  const buildDir = path.join(DATA_DIR, "generated", record.id);
+  if (!fs.existsSync(buildDir)) return res.status(404).json({ error: "Build files missing" });
+
+  const current: Record<string, string> = {};
+  for (const name of fs.readdirSync(buildDir)) {
+    const filePath = path.join(buildDir, name);
+    if (fs.statSync(filePath).isFile()) current[name] = fs.readFileSync(filePath, "utf-8");
+  }
+
+  let updated: Record<string, string>;
+  try {
+    updated = await refineSite(app, current, prompt.trim());
+  } catch (err) {
+    console.error("Build refinement failed:", err);
+    return res.status(500).json({ error: "Failed to modify the build" });
+  }
+
+  for (const [name, content] of Object.entries(updated)) {
+    fs.writeFileSync(path.join(buildDir, path.basename(name)), content);
+  }
+
+  res.json({ ok: true, files: Object.keys(updated) });
 });
 
 // A specific file inside a build directory (e.g. /generated/<id>/tasks.html).

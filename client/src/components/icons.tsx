@@ -100,6 +100,32 @@ export function IconEdit({ size = 16 }: IconProps) {
   );
 }
 
+export function IconChat({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  );
+}
+
+export function IconSend({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <path d="M22 2 11 13" />
+      <path d="M22 2 15 22l-4-9-9-4z" />
+    </svg>
+  );
+}
+
+export function IconClose({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <path d="M18 6 6 18" />
+      <path d="M6 6l12 12" />
+    </svg>
+  );
+}
+
 export function IconSparkle({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>

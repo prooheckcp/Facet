@@ -173,32 +173,8 @@ function sanitizeFileName(name: string): string {
   return base.replace(/[^a-zA-Z0-9._-]/g, "").slice(0, 64);
 }
 
-/**
- * Generates the frontend as a set of named HTML files ({ "index.html": ..., ... }).
- * Returns a single placeholder index.html if no API key is configured or the
- * model response can't be parsed.
- */
-export async function generateSite(app: Application, userPrompt: string): Promise<Record<string, string>> {
-  const fallback = { "index.html": placeholderHtml(app, userPrompt) };
-
-  const apiKey = process.env.OPENAI_API_KEY?.trim();
-  if (!apiKey) {
-    return fallback;
-  }
-
-  const client = new OpenAI({ apiKey });
-  const { system, user } = buildPrompt(app, userPrompt);
-
-  const completion = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    response_format: { type: "json_object" },
-    messages: [
-      { role: "system", content: system },
-      { role: "user", content: user },
-    ],
-  });
-
-  const raw = completion.choices[0]?.message?.content?.trim();
+/** Parse a model response of shape { "files": { name: html } } into a safe file map. */
+function filesFromJson(raw: string | undefined | null, fallback: Record<string, string>): Record<string, string> {
   if (!raw) return fallback;
 
   let parsed: unknown;
@@ -230,4 +206,85 @@ export async function generateSite(app: Application, userPrompt: string): Promis
   }
 
   return files;
+}
+
+/**
+ * Generates the frontend as a set of named HTML files ({ "index.html": ..., ... }).
+ * Returns a single placeholder index.html if no API key is configured or the
+ * model response can't be parsed.
+ */
+export async function generateSite(app: Application, userPrompt: string): Promise<Record<string, string>> {
+  const fallback = { "index.html": placeholderHtml(app, userPrompt) };
+
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  if (!apiKey) {
+    return fallback;
+  }
+
+  const client = new OpenAI({ apiKey });
+  const { system, user } = buildPrompt(app, userPrompt);
+
+  const completion = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: user },
+    ],
+  });
+
+  const raw = completion.choices[0]?.message?.content?.trim();
+  return filesFromJson(raw, fallback);
+}
+
+/**
+ * Applies a user's change request to an existing multi-file build. The current
+ * files are sent to the model along with the requested change, and the complete
+ * updated file set is returned. Returns the current files unchanged if no API
+ * key is configured or the response can't be parsed.
+ */
+export async function refineSite(
+  app: Application,
+  currentFiles: Record<string, string>,
+  changeRequest: string
+): Promise<Record<string, string>> {
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  if (!apiKey) {
+    return currentFiles;
+  }
+
+  const client = new OpenAI({ apiKey });
+  const { system } = buildPrompt(app, changeRequest);
+
+  const refineSystem =
+    system +
+    " IMPORTANT: You are EDITING an EXISTING site, not starting over. The current files are provided." +
+    " Apply the user's requested change and preserve everything else (layout, content, and behavior not" +
+    " mentioned). Return the COMPLETE updated set of files in the same JSON format, including unchanged" +
+    " files. You may add or remove pages if the change requires it, keeping index.html as the entry point.";
+
+  const user = [
+    `Application name: ${app.name}`,
+    `Application abstract: ${app.abstract}`,
+    "Registered endpoints:",
+    describeEndpoint(app),
+    "",
+    "These are the CURRENT files of the site (JSON):",
+    JSON.stringify({ files: currentFiles }),
+    "",
+    `Requested change: ${changeRequest}`,
+    'Return the full updated { "files": { ... } } JSON object with the change applied.',
+  ].join("\n");
+
+  const completion = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    response_format: { type: "json_object" },
+    messages: [
+      { role: "system", content: refineSystem },
+      { role: "user", content: user },
+    ],
+  });
+
+  const raw = completion.choices[0]?.message?.content?.trim();
+  return filesFromJson(raw, currentFiles);
 }

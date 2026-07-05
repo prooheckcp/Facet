@@ -40,6 +40,11 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ prompt, applicationId }),
     }),
+  refineBuild: (buildId: string, prompt: string) =>
+    request<{ ok: boolean; files: string[] }>(`/generated/${buildId}/refine`, {
+      method: "POST",
+      body: JSON.stringify({ prompt }),
+    }),
   getGeneratedHtml: async (id: string): Promise<string> => {
     const res = await fetch(`/api/generated/${id}`);
     if (!res.ok) throw new Error("Failed to load generated app");
