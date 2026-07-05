@@ -100,6 +100,15 @@ export function IconEdit({ size = 16 }: IconProps) {
   );
 }
 
+export function IconSparkle({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <path d="M12 3l1.9 5.1 5.1 1.9-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z" />
+      <path d="M19 15l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z" />
+    </svg>
+  );
+}
+
 export function IconTrash({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>

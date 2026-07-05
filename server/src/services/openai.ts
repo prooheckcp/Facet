@@ -23,6 +23,19 @@ function buildPrompt(app: Application, userPrompt: string): { system: string; us
     "through the registered API endpoints listed below, using relative fetch() calls to their paths.",
     "Every capability exposed by the registered endpoints should remain reachable somewhere in the UI,",
     "even while you tailor the layout/workflow to the user's request.",
+    "",
+    "DESIGN BAR — the result must look modern, polished, and premium, like a well-designed 2025 SaaS product:",
+    "use a cohesive color palette (tasteful gradients and accent colors), generous whitespace, a clear visual",
+    "hierarchy, rounded corners, soft shadows/depth, and clean modern typography. Favor a refined light or dark",
+    "theme done well over a plain default-styled page. Never ship an unstyled or barebones HTML page.",
+    "",
+    "MOTION — bring the interface to life with tasteful animation and micro-interactions, using ONLY CSS and",
+    "vanilla JS (CSS transitions/keyframes, requestAnimationFrame): smooth hover and focus states on interactive",
+    "elements, subtle entrance/reveal animations as content loads, animated loading indicators (spinners/skeletons)",
+    "while fetch() is in flight, and gentle feedback on user actions (button presses, successes, errors).",
+    "Keep motion smooth, fast, and purposeful — polished, never gratuitous or distracting. Respect",
+    "prefers-reduced-motion. Make the layout fully responsive and keep it accessible.",
+    "",
     "Respond with ONLY the raw HTML document — no markdown fences, no commentary.",
   ].join(" ");
 
@@ -98,6 +111,46 @@ export function placeholderHtml(app: Application, userPrompt: string): string {
   </div>
 </body>
 </html>`;
+}
+
+/**
+ * Takes a user's rough interface description and rewrites it into a clearer,
+ * more specific, more actionable prompt for the build agent — without inventing
+ * features the user didn't ask for. Returns the original prompt unchanged if no
+ * API key is configured.
+ */
+export async function improvePrompt(rawPrompt: string, app?: Application): Promise<string> {
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  if (!apiKey) {
+    return rawPrompt;
+  }
+
+  const client = new OpenAI({ apiKey });
+  const context = app
+    ? `The interface will be generated for an application called "${app.name}" — ${app.abstract}.`
+    : "";
+
+  const system = [
+    "You are a prompt-refinement assistant for Facet, a tool that turns a plain-language request",
+    "into a custom web frontend for an existing API. Rewrite the user's interface description so it is",
+    "clearer, more specific, and more actionable for a UI-generation model, while faithfully preserving",
+    "the user's original intent and NOT inventing unrelated features. Encourage a clean, modern, visually",
+    "polished, and tastefully animated interface. Keep it concise — a short paragraph or a few sentences.",
+    "Respond with ONLY the improved prompt text: no preamble, no quotes, no markdown, no commentary.",
+  ].join(" ");
+
+  const user = `${context}\n\nUser's current interface description:\n"""${rawPrompt}"""\n\nRewrite it into an improved interface description.`;
+
+  const completion = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      { role: "system", content: system },
+      { role: "user", content: user },
+    ],
+  });
+
+  const improved = completion.choices[0]?.message?.content?.trim();
+  return improved && improved.length ? improved : rawPrompt;
 }
 
 export async function generateFrontend(app: Application, userPrompt: string): Promise<string> {

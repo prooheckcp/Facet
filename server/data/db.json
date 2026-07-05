@@ -12,7 +12,12 @@
           "path": "/tasks",
           "description": "Returns all tasks assigned to the current user.",
           "requestFields": [],
-          "responseFields": [{ "name": "tasks", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "tasks",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000002",
@@ -20,11 +25,25 @@
           "path": "/tasks",
           "description": "Creates a new task.",
           "requestFields": [
-            { "name": "title", "type": "string" },
-            { "name": "dueDate", "type": "string" },
-            { "name": "assigneeId", "type": "string" }
+            {
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "name": "dueDate",
+              "type": "string"
+            },
+            {
+              "name": "assigneeId",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "task", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "task",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000003",
@@ -32,10 +51,21 @@
           "path": "/tasks/:id",
           "description": "Updates the status or details of an existing task.",
           "requestFields": [
-            { "name": "status", "type": "string" },
-            { "name": "title", "type": "string" }
+            {
+              "name": "status",
+              "type": "string"
+            },
+            {
+              "name": "title",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "task", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "task",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000004",
@@ -43,7 +73,12 @@
           "path": "/tasks/:id",
           "description": "Deletes a task.",
           "requestFields": [],
-          "responseFields": [{ "name": "success", "type": "boolean" }]
+          "responseFields": [
+            {
+              "name": "success",
+              "type": "boolean"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/office,planning?lock=1"
@@ -60,7 +95,12 @@
           "path": "/customers",
           "description": "Returns a list of customers with their billing status.",
           "requestFields": [],
-          "responseFields": [{ "name": "customers", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "customers",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "b2000000-0000-4000-8000-000000000002",
@@ -68,11 +108,25 @@
           "path": "/invoices",
           "description": "Creates and sends an invoice to a customer.",
           "requestFields": [
-            { "name": "customerId", "type": "string" },
-            { "name": "amount", "type": "number" },
-            { "name": "dueDate", "type": "string" }
+            {
+              "name": "customerId",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "number"
+            },
+            {
+              "name": "dueDate",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "invoice", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "invoice",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "b2000000-0000-4000-8000-000000000003",
@@ -80,10 +134,21 @@
           "path": "/refunds",
           "description": "Issues a refund against a paid invoice.",
           "requestFields": [
-            { "name": "invoiceId", "type": "string" },
-            { "name": "amount", "type": "number" }
+            {
+              "name": "invoiceId",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "number"
+            }
           ],
-          "responseFields": [{ "name": "refund", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "refund",
+              "type": "object"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/invoice,accounting?lock=2"
@@ -100,10 +165,21 @@
           "path": "/forecast",
           "description": "Returns a multi-day forecast for a location.",
           "requestFields": [
-            { "name": "lat", "type": "number" },
-            { "name": "lon", "type": "number" }
+            {
+              "name": "lat",
+              "type": "number"
+            },
+            {
+              "name": "lon",
+              "type": "number"
+            }
           ],
-          "responseFields": [{ "name": "forecast", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "forecast",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000a2",
@@ -111,7 +187,12 @@
           "path": "/cities/:id/current",
           "description": "Current conditions for a city.",
           "requestFields": [],
-          "responseFields": [{ "name": "conditions", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "conditions",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000a3",
@@ -119,11 +200,25 @@
           "path": "/history",
           "description": "Historical climate data for a date range.",
           "requestFields": [
-            { "name": "cityId", "type": "string" },
-            { "name": "from", "type": "string" },
-            { "name": "to", "type": "string" }
+            {
+              "name": "cityId",
+              "type": "string"
+            },
+            {
+              "name": "from",
+              "type": "string"
+            },
+            {
+              "name": "to",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "records", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "records",
+              "type": "array"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/weather,sky?lock=3"
@@ -140,7 +235,12 @@
           "path": "/workouts",
           "description": "Lists the user's logged workouts.",
           "requestFields": [],
-          "responseFields": [{ "name": "workouts", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "workouts",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000b2",
@@ -148,11 +248,25 @@
           "path": "/workouts",
           "description": "Logs a new workout session.",
           "requestFields": [
-            { "name": "type", "type": "string" },
-            { "name": "durationMinutes", "type": "number" },
-            { "name": "calories", "type": "number" }
+            {
+              "name": "type",
+              "type": "string"
+            },
+            {
+              "name": "durationMinutes",
+              "type": "number"
+            },
+            {
+              "name": "calories",
+              "type": "number"
+            }
           ],
-          "responseFields": [{ "name": "workout", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "workout",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000b3",
@@ -160,7 +274,12 @@
           "path": "/progress",
           "description": "Returns progress metrics over time.",
           "requestFields": [],
-          "responseFields": [{ "name": "metrics", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "metrics",
+              "type": "object"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/fitness,gym?lock=4"
@@ -177,7 +296,12 @@
           "path": "/pantry",
           "description": "Lists items currently in the pantry.",
           "requestFields": [],
-          "responseFields": [{ "name": "items", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "items",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000c2",
@@ -185,11 +309,25 @@
           "path": "/pantry",
           "description": "Adds an item to the pantry.",
           "requestFields": [
-            { "name": "name", "type": "string" },
-            { "name": "quantity", "type": "number" },
-            { "name": "unit", "type": "string" }
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "quantity",
+              "type": "number"
+            },
+            {
+              "name": "unit",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "item", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "item",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000c3",
@@ -197,7 +335,12 @@
           "path": "/recipes",
           "description": "Suggests recipes you can make with items on hand.",
           "requestFields": [],
-          "responseFields": [{ "name": "recipes", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "recipes",
+              "type": "array"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/kitchen,food?lock=5"
@@ -213,8 +356,18 @@
           "method": "GET",
           "path": "/books",
           "description": "Searches the book catalog.",
-          "requestFields": [{ "name": "query", "type": "string" }],
-          "responseFields": [{ "name": "books", "type": "array" }]
+          "requestFields": [
+            {
+              "name": "query",
+              "type": "string"
+            }
+          ],
+          "responseFields": [
+            {
+              "name": "books",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000d2",
@@ -222,15 +375,30 @@
           "path": "/books/:id",
           "description": "Returns details for a single book.",
           "requestFields": [],
-          "responseFields": [{ "name": "book", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "book",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000d3",
           "method": "POST",
           "path": "/reading-list",
           "description": "Adds a book to the reading list.",
-          "requestFields": [{ "name": "bookId", "type": "string" }],
-          "responseFields": [{ "name": "success", "type": "boolean" }]
+          "requestFields": [
+            {
+              "name": "bookId",
+              "type": "string"
+            }
+          ],
+          "responseFields": [
+            {
+              "name": "success",
+              "type": "boolean"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/books,library?lock=6"
@@ -247,7 +415,12 @@
           "path": "/vehicles",
           "description": "Lists all vehicles in the fleet.",
           "requestFields": [],
-          "responseFields": [{ "name": "vehicles", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "vehicles",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000e2",
@@ -255,7 +428,12 @@
           "path": "/vehicles/:id/location",
           "description": "Returns the current GPS location of a vehicle.",
           "requestFields": [],
-          "responseFields": [{ "name": "location", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "location",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000e3",
@@ -263,11 +441,25 @@
           "path": "/maintenance",
           "description": "Schedules maintenance for a vehicle.",
           "requestFields": [
-            { "name": "vehicleId", "type": "string" },
-            { "name": "date", "type": "string" },
-            { "name": "notes", "type": "string" }
+            {
+              "name": "vehicleId",
+              "type": "string"
+            },
+            {
+              "name": "date",
+              "type": "string"
+            },
+            {
+              "name": "notes",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "ticket", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "ticket",
+              "type": "object"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/truck,highway?lock=7"
@@ -284,7 +476,12 @@
           "path": "/contacts",
           "description": "Lists all contacts.",
           "requestFields": [],
-          "responseFields": [{ "name": "contacts", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "contacts",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000f2",
@@ -292,11 +489,25 @@
           "path": "/deals",
           "description": "Creates a new deal in the pipeline.",
           "requestFields": [
-            { "name": "contactId", "type": "string" },
-            { "name": "amount", "type": "number" },
-            { "name": "stage", "type": "string" }
+            {
+              "name": "contactId",
+              "type": "string"
+            },
+            {
+              "name": "amount",
+              "type": "number"
+            },
+            {
+              "name": "stage",
+              "type": "string"
+            }
           ],
-          "responseFields": [{ "name": "deal", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "deal",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000f3",
@@ -304,7 +515,12 @@
           "path": "/pipeline",
           "description": "Returns pipeline analytics grouped by stage.",
           "requestFields": [],
-          "responseFields": [{ "name": "pipeline", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "pipeline",
+              "type": "object"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/business,handshake?lock=8"
@@ -321,7 +537,12 @@
           "path": "/events",
           "description": "Lists upcoming events.",
           "requestFields": [],
-          "responseFields": [{ "name": "events", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "events",
+              "type": "array"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000g2",
@@ -329,11 +550,25 @@
           "path": "/events",
           "description": "Creates a new event.",
           "requestFields": [
-            { "name": "title", "type": "string" },
-            { "name": "date", "type": "string" },
-            { "name": "capacity", "type": "number" }
+            {
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "name": "date",
+              "type": "string"
+            },
+            {
+              "name": "capacity",
+              "type": "number"
+            }
           ],
-          "responseFields": [{ "name": "event", "type": "object" }]
+          "responseFields": [
+            {
+              "name": "event",
+              "type": "object"
+            }
+          ]
         },
         {
           "id": "c0000000-0000-4000-8000-0000000000g3",
@@ -341,7 +576,12 @@
           "path": "/events/:id/attendees",
           "description": "Lists attendees registered for an event.",
           "requestFields": [],
-          "responseFields": [{ "name": "attendees", "type": "array" }]
+          "responseFields": [
+            {
+              "name": "attendees",
+              "type": "array"
+            }
+          ]
         }
       ],
       "imageUrl": "https://loremflickr.com/600/360/concert,event?lock=9"
@@ -352,7 +592,9 @@
       "id": "7b938c1a-046f-4133-8d78-b306ea56c9a3",
       "name": "My Key",
       "key": "facet_sk_010c7604c7c346aba4a228b9058d28b9",
-      "appIds": ["a1e11111-0000-4000-8000-000000000001"],
+      "appIds": [
+        "a1e11111-0000-4000-8000-000000000001"
+      ],
       "expiresAt": "2026-07-08",
       "createdAt": "2026-07-05T04:02:27.908Z"
     }
@@ -372,6 +614,13 @@
       "prompt": "Make it pink",
       "htmlFile": "generated/b491a5fe-97a6-43f6-82c2-ff7737d005e5.html",
       "createdAt": "2026-07-05T05:08:37.425Z"
+    },
+    {
+      "id": "8253e960-1335-405c-9e62-f65a9e7ea6a1",
+      "applicationId": "c0000000-0000-4000-8000-000000000004",
+      "prompt": "Design a sleek and minimalistic interface for the \"FitPulse\" gym application, focusing on workout tracking, training plans, and progress analytics for athletes and gyms. Utilize a vibrant green color palette to create a fresh and energetic feel. Ensure the layout is user-friendly, with intuitive navigation and visually engaging elements for a polished and modern experience.",
+      "htmlFile": "generated/8253e960-1335-405c-9e62-f65a9e7ea6a1.html",
+      "createdAt": "2026-07-05T06:20:26.285Z"
     }
   ]
 }

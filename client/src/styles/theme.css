@@ -179,6 +179,23 @@ button {
   animation: btn-gradient 4s linear infinite;
 }
 
+/* Small spinning loader (e.g. the "Improve prompt" button while waiting). */
+.spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(124, 58, 237, 0.28);
+  border-top-color: #7c3aed;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Typewriter blinking caret. */
 .tw-caret {
   display: inline-block;

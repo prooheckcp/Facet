@@ -5,6 +5,7 @@ import { api } from "../../api/client";
 import type { ApplicationDetail } from "../../api/types";
 import { TopNav } from "../../components/TopNav";
 import { MethodPill } from "../../components/MethodPill";
+import { IconSparkle } from "../../components/icons";
 import { usePageTitle } from "../../hooks/usePageTitle";
 import { staggerContainer, staggerItem } from "../../components/Reveal";
 
@@ -17,6 +18,7 @@ export function ApplicationDetailPage() {
   usePageTitle(app?.name ?? "Application");
   const [prompt, setPrompt] = useState("");
   const [building, setBuilding] = useState(false);
+  const [improving, setImproving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -35,6 +37,20 @@ export function ApplicationDetailPage() {
       setError(err instanceof Error ? err.message : "Build failed");
     } finally {
       setBuilding(false);
+    }
+  }
+
+  async function handleImprove() {
+    if (!prompt.trim() || improving) return;
+    setImproving(true);
+    setError(null);
+    try {
+      const res = await api.improvePrompt(prompt.trim(), appId);
+      setPrompt(res.prompt);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not improve the prompt");
+    } finally {
+      setImproving(false);
     }
   }
 
@@ -105,10 +121,35 @@ export function ApplicationDetailPage() {
                   />
                 </div>
               </div>
-              {error && <p style={{ color: "#f87171", fontSize: "0.9rem" }}>{error}</p>}
-              <button className="btn btn-primary" onClick={handleBuild} disabled={building || !prompt.trim()}>
-                {building ? "Building…" : "Build"}
+              <button
+                className="btn"
+                onClick={handleImprove}
+                disabled={!prompt.trim() || improving || building}
+                title={!prompt.trim() ? "Write a description first" : "Let AI refine your description"}
+                style={{ color: "#6b21d6", borderColor: "rgba(124,58,237,0.35)", marginBottom: 14 }}
+              >
+                {improving ? (
+                  <>
+                    <span className="spinner" />
+                    Improving…
+                  </>
+                ) : (
+                  <>
+                    <IconSparkle />
+                    Improve prompt
+                  </>
+                )}
               </button>
+              {error && <p style={{ color: "#f87171", fontSize: "0.9rem" }}>{error}</p>}
+              <div>
+                <button
+                  className="btn btn-primary"
+                  onClick={handleBuild}
+                  disabled={building || improving || !prompt.trim()}
+                >
+                  {building ? "Building…" : "Build"}
+                </button>
+              </div>
             </div>
 
             {app.builds.length > 0 && (

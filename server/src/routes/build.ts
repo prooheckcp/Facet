@@ -3,10 +3,31 @@ import path from "path";
 import { Router } from "express";
 import { v4 as uuid } from "uuid";
 import { DATA_DIR, readDb, writeDb } from "../db.js";
-import { generateFrontend, placeholderHtml } from "../services/openai.js";
+import { generateFrontend, improvePrompt, placeholderHtml } from "../services/openai.js";
 import type { GeneratedApp } from "../types.js";
 
 export const buildRouter = Router();
+
+buildRouter.post("/improve-prompt", async (req, res) => {
+  const { prompt, applicationId } = req.body as { prompt?: string; applicationId?: string };
+  if (!prompt || !prompt.trim()) {
+    return res.status(400).json({ error: "prompt is required" });
+  }
+
+  let app;
+  if (applicationId) {
+    const db = readDb();
+    app = db.applications.find((a) => a.id === applicationId);
+  }
+
+  try {
+    const improved = await improvePrompt(prompt.trim(), app);
+    res.json({ prompt: improved });
+  } catch (err) {
+    console.error("Prompt improvement failed:", err);
+    res.status(500).json({ error: "Failed to improve prompt" });
+  }
+});
 
 buildRouter.post("/build", async (req, res) => {
   const { applicationId, prompt } = req.body as { applicationId?: string; prompt?: string };
