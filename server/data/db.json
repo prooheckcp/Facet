@@ -81,6 +81,27 @@
           ]
         }
       ]
+    },
+    {
+      "id": "79f73b82-1d0a-476d-b4db-ae8f6a4e0b9e",
+      "name": "Billing Support",
+      "abstract": "A platform for managing customer billing, subscriptions, invoices, and refunds.",
+      "endpoints": [
+        {
+          "id": "new-8490mpocheh",
+          "method": "GET",
+          "path": "/customers",
+          "description": "Returns a list of customers",
+          "requestFields": [],
+          "responseFields": [
+            {
+              "name": "",
+              "type": "array[string]"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2026-07-05T05:25:50.303Z"
     }
   ],
   "apiKeys": [
@@ -103,6 +124,13 @@
       "prompt": "Make it pink",
       "htmlFile": "generated/31310391-499f-40f1-9dd8-be1c0d321017.html",
       "createdAt": "2026-07-05T04:02:50.025Z"
+    },
+    {
+      "id": "b491a5fe-97a6-43f6-82c2-ff7737d005e5",
+      "applicationId": "a1e11111-0000-4000-8000-000000000001",
+      "prompt": "Make it pink",
+      "htmlFile": "generated/b491a5fe-97a6-43f6-82c2-ff7737d005e5.html",
+      "createdAt": "2026-07-05T05:08:37.425Z"
     }
   ]
 }

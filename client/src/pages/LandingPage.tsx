@@ -9,13 +9,13 @@ import { Reveal, staggerContainer, staggerItem } from "../components/Reveal";
 const MotionLink = motion.create(Link);
 
 const LIGHT = {
-  bg: "#f6f5fc",
-  card: "#ffffff",
+  bg: "#e7edfa",
+  card: "#f4f7ff",
   text: "#1b1b2e",
   muted: "#6b6b82",
   dim: "#9797ac",
-  border: "rgba(27,27,46,0.09)",
-  borderStrong: "rgba(27,27,46,0.16)",
+  border: "rgba(30,41,90,0.1)",
+  borderStrong: "rgba(30,41,90,0.2)",
 };
 
 /* A mock browser window used to fake a Facet-generated website. */
@@ -47,7 +47,7 @@ function BrowserMock({
           gap: 7,
           padding: "10px 12px",
           borderBottom: `1px solid ${LIGHT.border}`,
-          background: "#faf9fe",
+          background: "#edf2ff",
         }}
       >
         {["#ddd6fe", "#c4b5fd", "#a78bfa"].map((c) => (
@@ -59,7 +59,7 @@ function BrowserMock({
             flex: 1,
             height: 18,
             borderRadius: 6,
-            background: "#efedf7",
+            background: "#e4ecfb",
             display: "flex",
             alignItems: "center",
             padding: "0 8px",
@@ -85,7 +85,7 @@ const bar = (h: number, c: string): CSSProperties => ({
 });
 const block = (style: CSSProperties = {}): CSSProperties => ({
   borderRadius: 6,
-  background: "#efedf7",
+  background: "#e4ecfb",
   ...style,
 });
 
@@ -472,7 +472,7 @@ export function LandingPage() {
             every user gets an AI-generated frontend tailored to how they actually want to work.
           </p>
           <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap", marginBottom: 64 }}>
-            <Link to="/marketplace" className="btn btn-primary" style={{ padding: "14px 28px", fontSize: "1rem" }}>
+            <Link to="/marketplace" className="btn btn-anim" style={{ padding: "14px 28px", fontSize: "1rem" }}>
               Explore the marketplace →
             </Link>
             <Link

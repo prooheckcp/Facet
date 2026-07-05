@@ -1,13 +1,25 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { TopNav } from "../../components/TopNav";
+import { IconGrid, IconKey, IconCard, IconLogout } from "../../components/icons";
 
 const tabs = [
-  { to: "/dashboard/applications", label: "Applications" },
-  { to: "/dashboard/api-keys", label: "API Keys" },
-  { to: "/dashboard/subscription", label: "Subscription" },
+  // The dashboard index (/dashboard) renders the Applications tab, so treat the
+  // bare /dashboard path as the Applications tab being active too.
+  { to: "/dashboard/applications", label: "Applications", icon: IconGrid, indexMatch: true },
+  { to: "/dashboard/api-keys", label: "API Keys", icon: IconKey },
+  { to: "/dashboard/subscription", label: "Subscription", icon: IconCard },
 ];
 
 export function DashboardLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const atDashboardIndex = location.pathname === "/dashboard" || location.pathname === "/dashboard/";
+
+  function handleLogout() {
+    // Demo only: no real auth — logging out just returns you to the login page.
+    navigate("/login");
+  }
+
   return (
     <div>
       <TopNav />
@@ -19,18 +31,47 @@ export function DashboardLayout() {
               <NavLink
                 key={tab.to}
                 to={tab.to}
-                style={({ isActive }) => ({
-                  padding: "10px 14px",
-                  borderRadius: 10,
-                  fontSize: "0.95rem",
-                  fontWeight: isActive ? 600 : 400,
-                  color: isActive ? "#6b21d6" : "var(--text-muted)",
-                  background: isActive ? "rgba(124,58,237,0.1)" : "transparent",
-                })}
+                style={({ isActive }) => {
+                  const active = isActive || (tab.indexMatch && atDashboardIndex);
+                  return {
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "10px 14px",
+                    borderRadius: 10,
+                    fontSize: "0.95rem",
+                    fontWeight: active ? 600 : 400,
+                    color: active ? "#6b21d6" : "var(--text-muted)",
+                    background: active ? "rgba(124,58,237,0.1)" : "transparent",
+                  };
+                }}
               >
+                <tab.icon />
                 {tab.label}
               </NavLink>
             ))}
+            <button
+              type="button"
+              onClick={handleLogout}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginTop: 8,
+                padding: "10px 14px",
+                borderRadius: 10,
+                border: "none",
+                background: "transparent",
+                textAlign: "left",
+                fontSize: "0.95rem",
+                fontWeight: 500,
+                color: "#dc2626",
+                cursor: "pointer",
+              }}
+            >
+              <IconLogout />
+              Log out
+            </button>
           </nav>
         </aside>
         <div style={{ flex: 1, minWidth: 0 }}>
