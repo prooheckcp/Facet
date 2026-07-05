@@ -8,7 +8,7 @@ marketplaceRouter.get("/", (req, res) => {
   const search = String(req.query.search ?? "").trim().toLowerCase();
   const apps = db.applications
     .filter((a) => !search || a.name.toLowerCase().includes(search))
-    .map((a) => ({ id: a.id, name: a.name, abstract: a.abstract, endpointCount: a.endpoints.length }));
+    .map((a) => ({ id: a.id, name: a.name, abstract: a.abstract, endpointCount: a.endpoints.length, imageUrl: a.imageUrl }));
   res.json(apps);
 });
 

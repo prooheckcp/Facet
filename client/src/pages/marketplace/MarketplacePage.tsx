@@ -51,6 +51,23 @@ export function MarketplacePage() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
           {apps.map((app) => (
             <Link key={app.id} to={`/marketplace/${app.id}`} className="card" style={{ display: "block" }}>
+              {app.imageUrl?.trim() && (
+                <img
+                  src={app.imageUrl}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: 140,
+                    objectFit: "cover",
+                    borderRadius: 10,
+                    marginBottom: 14,
+                    display: "block",
+                  }}
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
+                />
+              )}
               <h3 style={{ margin: "0 0 8px" }}>{app.name}</h3>
               <p style={{ color: "var(--text-muted)", margin: "0 0 16px", minHeight: 40 }}>{app.abstract}</p>
               <span className="pill" style={{ background: "var(--surface)", color: "var(--text-dim)" }}>

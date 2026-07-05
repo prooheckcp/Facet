@@ -72,6 +72,15 @@ export function IconCard({ size = 16 }: IconProps) {
   );
 }
 
+export function IconEye({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  );
+}
+
 export function IconLogout({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>

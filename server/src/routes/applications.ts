@@ -41,14 +41,17 @@ applicationsRouter.put("/:id", (req, res) => {
   const app = db.applications.find((a) => a.id === req.params.id);
   if (!app) return res.status(404).json({ error: "Application not found" });
 
-  const { name, abstract, endpoints } = req.body as {
+  const { name, abstract, endpoints, imageUrl } = req.body as {
     name?: string;
     abstract?: string;
     endpoints?: Endpoint[];
+    imageUrl?: string;
   };
 
   if (name !== undefined) app.name = name;
   if (abstract !== undefined) app.abstract = abstract;
+  // Cosmetic marketplace image — never fed to the AI build agent.
+  if (imageUrl !== undefined) app.imageUrl = imageUrl.trim() || undefined;
   if (endpoints !== undefined) {
     app.endpoints = endpoints.map((ep) => ({
       id: ep.id || uuid(),

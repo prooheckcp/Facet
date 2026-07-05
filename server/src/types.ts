@@ -20,6 +20,11 @@ export interface Application {
   abstract: string;
   endpoints: Endpoint[];
   createdAt: string;
+  /**
+   * Cosmetic image for the marketplace listing only. This is NOT sent to the
+   * AI build agent — it is purely a visual for the marketplace page.
+   */
+  imageUrl?: string;
 }
 
 export interface ApiKey {

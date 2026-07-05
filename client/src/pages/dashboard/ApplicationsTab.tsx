@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
 import type { Application } from "../../api/types";
+import { IconEye } from "../../components/icons";
 
 export function ApplicationsTab() {
   const [apps, setApps] = useState<Application[]>([]);
@@ -78,6 +79,15 @@ export function ApplicationsTab() {
               </p>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
+              <Link
+                to={`/marketplace/${app.id}`}
+                className="btn"
+                title="View this application's marketplace page"
+                style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <IconEye />
+                View
+              </Link>
               <Link to={`/dashboard/applications/${app.id}`} className="btn">
                 Edit
               </Link>

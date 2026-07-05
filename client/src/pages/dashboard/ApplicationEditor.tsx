@@ -158,6 +158,7 @@ export function ApplicationEditor() {
       const updated = await api.updateApplication(app.id, {
         name: app.name,
         abstract: app.abstract,
+        imageUrl: app.imageUrl,
         endpoints: app.endpoints,
       });
       setApp(updated);
@@ -198,6 +199,34 @@ export function ApplicationEditor() {
         <div className="field">
           <label>Abstract</label>
           <textarea rows={3} value={app.abstract} onChange={(e) => setApp({ ...app, abstract: e.target.value })} />
+        </div>
+        <div className="field">
+          <label>Marketplace image URL</label>
+          <input
+            value={app.imageUrl ?? ""}
+            onChange={(e) => setApp({ ...app, imageUrl: e.target.value })}
+            placeholder="https://example.com/cover.png"
+          />
+          <p style={{ margin: "6px 0 0", color: "var(--text-dim)", fontSize: "0.8rem" }}>
+            Cosmetic only — shown on the marketplace page. This is not sent to the AI.
+          </p>
+          {app.imageUrl?.trim() && (
+            <img
+              src={app.imageUrl}
+              alt=""
+              style={{
+                marginTop: 12,
+                maxWidth: 240,
+                width: "100%",
+                borderRadius: 10,
+                border: "1px solid var(--border)",
+                display: "block",
+              }}
+              onError={(e) => {
+                (e.currentTarget as HTMLImageElement).style.display = "none";
+              }}
+            />
+          )}
         </div>
       </div>
 

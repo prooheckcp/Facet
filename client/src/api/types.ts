@@ -20,6 +20,8 @@ export interface Application {
   abstract: string;
   endpoints: Endpoint[];
   createdAt: string;
+  /** Cosmetic image for the marketplace page only — never sent to the AI. */
+  imageUrl?: string;
 }
 
 export interface MarketplaceApplication {
@@ -27,6 +29,7 @@ export interface MarketplaceApplication {
   name: string;
   abstract: string;
   endpointCount: number;
+  imageUrl?: string;
 }
 
 export interface GeneratedApp {

@@ -61,6 +61,23 @@ export function ApplicationDetailPage() {
         <Link to="/marketplace" style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
           ← Back to marketplace
         </Link>
+        {app.imageUrl?.trim() && (
+          <img
+            src={app.imageUrl}
+            alt=""
+            style={{
+              width: "100%",
+              maxHeight: 260,
+              objectFit: "cover",
+              borderRadius: 14,
+              margin: "16px 0 8px",
+              display: "block",
+            }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).style.display = "none";
+            }}
+          />
+        )}
         <h1 style={{ marginBottom: 4 }}>{app.name}</h1>
         <p style={{ color: "var(--text-muted)", maxWidth: 640 }}>{app.abstract}</p>
 
