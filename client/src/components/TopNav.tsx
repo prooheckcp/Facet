@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 
-export function TopNav() {
+export function TopNav({ light = false }: { light?: boolean }) {
   return (
-    <div className="top-nav">
+    <div className={light ? "top-nav top-nav--light" : "top-nav"}>
       <Link to="/" className="logo">
-        <span className="gradient-text">Facet</span>
+        <span className={light ? "gradient-text-light" : "gradient-text"}>Facet</span>
       </Link>
       <nav>
         <Link to="/marketplace">Marketplace</Link>

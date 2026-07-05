@@ -1,19 +1,19 @@
 :root {
-  --bg: #0b0b14;
-  --bg-elevated: #12121e;
-  --surface: rgba(255, 255, 255, 0.04);
-  --surface-hover: rgba(255, 255, 255, 0.07);
-  --border: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.16);
-  --text: #e6e6f0;
-  --text-muted: #9797ac;
-  --text-dim: #6b6b80;
+  --bg: #0d0916;
+  --bg-elevated: #17112a;
+  --surface: rgba(167, 139, 250, 0.06);
+  --surface-hover: rgba(167, 139, 250, 0.11);
+  --border: rgba(167, 139, 250, 0.14);
+  --border-strong: rgba(167, 139, 250, 0.28);
+  --text: #ece8f7;
+  --text-muted: #a49bc4;
+  --text-dim: #736a90;
   --accent-1: #a78bfa;
-  --accent-2: #60a5fa;
-  --accent-3: #f472b6;
-  --gradient-brand: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-  --gradient-hero: radial-gradient(circle at 20% 20%, rgba(167, 139, 250, 0.25), transparent 45%),
-    radial-gradient(circle at 80% 0%, rgba(96, 165, 250, 0.2), transparent 45%),
+  --accent-2: #8b5cf6;
+  --accent-3: #c084fc;
+  --gradient-brand: linear-gradient(90deg, #a78bfa, #c084fc);
+  --gradient-hero: radial-gradient(circle at 20% 20%, rgba(167, 139, 250, 0.3), transparent 45%),
+    radial-gradient(circle at 80% 0%, rgba(192, 132, 252, 0.24), transparent 45%),
     var(--bg);
   --radius: 14px;
   --radius-sm: 10px;
@@ -51,6 +51,114 @@ button {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Darker purple brand gradient for use as text on light backgrounds (AA-safe). */
+.gradient-text-light {
+  background: linear-gradient(90deg, #7c3aed, #a21caf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---- Modern example-application card (landing page) ---- */
+.app-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(27, 27, 46, 0.09);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px -30px rgba(88, 60, 180, 0.35);
+  color: #1b1b2e;
+  transition: box-shadow 0.3s ease;
+}
+
+.app-card:hover {
+  box-shadow: 0 34px 60px -28px rgba(124, 58, 237, 0.5);
+}
+
+.app-card__cover {
+  position: relative;
+  height: 152px;
+  overflow: hidden;
+}
+
+.app-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.app-card:hover .app-card__cover img {
+  transform: scale(1.06);
+}
+
+.app-card__cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 45%, rgba(124, 58, 237, 0.32));
+}
+
+.app-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 20px;
+}
+
+/* Animated gradient outline that draws in on hover. */
+.app-card__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  padding: 1.5px;
+  background: linear-gradient(130deg, #a78bfa, #e879f9, #7c3aed, #a78bfa);
+  background-size: 300% 300%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.app-card:hover .app-card__ring {
+  opacity: 1;
+  animation: ring-move 3s linear infinite;
+}
+
+@keyframes ring-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+/* Typewriter blinking caret. */
+.tw-caret {
+  display: inline-block;
+  margin-left: 3px;
+  font-weight: 400;
+  color: #7c3aed;
+  animation: tw-blink 1s step-end infinite;
+}
+
+@keyframes tw-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .page {
@@ -205,4 +313,17 @@ label {
 
 .top-nav nav a:hover {
   color: var(--text);
+}
+
+/* Light-background variant of the nav (landing page). */
+.top-nav--light {
+  border-bottom-color: rgba(27, 27, 46, 0.09);
+}
+
+.top-nav--light nav {
+  color: #5a5a70;
+}
+
+.top-nav--light nav a:hover {
+  color: #1b1b2e;
 }
