@@ -3,7 +3,7 @@
     {
       "id": "a1e11111-0000-4000-8000-000000000001",
       "name": "TaskFlow",
-      "abstract": "A task management application for teams.",
+      "abstract": "A task management application for teams with boards, assignees, and due dates.",
       "createdAt": "2026-01-01T00:00:00.000Z",
       "endpoints": [
         {
@@ -12,12 +12,7 @@
           "path": "/tasks",
           "description": "Returns all tasks assigned to the current user.",
           "requestFields": [],
-          "responseFields": [
-            {
-              "name": "tasks",
-              "type": "array"
-            }
-          ]
+          "responseFields": [{ "name": "tasks", "type": "array" }]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000002",
@@ -25,25 +20,11 @@
           "path": "/tasks",
           "description": "Creates a new task.",
           "requestFields": [
-            {
-              "name": "title",
-              "type": "string"
-            },
-            {
-              "name": "dueDate",
-              "type": "string"
-            },
-            {
-              "name": "assigneeId",
-              "type": "string"
-            }
+            { "name": "title", "type": "string" },
+            { "name": "dueDate", "type": "string" },
+            { "name": "assigneeId", "type": "string" }
           ],
-          "responseFields": [
-            {
-              "name": "task",
-              "type": "object"
-            }
-          ]
+          "responseFields": [{ "name": "task", "type": "object" }]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000003",
@@ -51,21 +32,10 @@
           "path": "/tasks/:id",
           "description": "Updates the status or details of an existing task.",
           "requestFields": [
-            {
-              "name": "status",
-              "type": "string"
-            },
-            {
-              "name": "title",
-              "type": "string"
-            }
+            { "name": "status", "type": "string" },
+            { "name": "title", "type": "string" }
           ],
-          "responseFields": [
-            {
-              "name": "task",
-              "type": "object"
-            }
-          ]
+          "responseFields": [{ "name": "task", "type": "object" }]
         },
         {
           "id": "e1e11111-0000-4000-8000-000000000004",
@@ -73,36 +43,308 @@
           "path": "/tasks/:id",
           "description": "Deletes a task.",
           "requestFields": [],
-          "responseFields": [
-            {
-              "name": "success",
-              "type": "boolean"
-            }
-          ]
+          "responseFields": [{ "name": "success", "type": "boolean" }]
         }
       ],
-      "imageUrl": "https://picsum.photos/id/20/400/220"
+      "imageUrl": "https://loremflickr.com/600/360/office,planning?lock=1"
     },
     {
       "id": "79f73b82-1d0a-476d-b4db-ae8f6a4e0b9e",
       "name": "Billing Support",
       "abstract": "A platform for managing customer billing, subscriptions, invoices, and refunds.",
+      "createdAt": "2026-07-05T05:25:50.303Z",
       "endpoints": [
         {
-          "id": "new-8490mpocheh",
+          "id": "b2000000-0000-4000-8000-000000000001",
           "method": "GET",
           "path": "/customers",
-          "description": "Returns a list of customers",
+          "description": "Returns a list of customers with their billing status.",
           "requestFields": [],
-          "responseFields": [
-            {
-              "name": "",
-              "type": "array[string]"
-            }
-          ]
+          "responseFields": [{ "name": "customers", "type": "array" }]
+        },
+        {
+          "id": "b2000000-0000-4000-8000-000000000002",
+          "method": "POST",
+          "path": "/invoices",
+          "description": "Creates and sends an invoice to a customer.",
+          "requestFields": [
+            { "name": "customerId", "type": "string" },
+            { "name": "amount", "type": "number" },
+            { "name": "dueDate", "type": "string" }
+          ],
+          "responseFields": [{ "name": "invoice", "type": "object" }]
+        },
+        {
+          "id": "b2000000-0000-4000-8000-000000000003",
+          "method": "POST",
+          "path": "/refunds",
+          "description": "Issues a refund against a paid invoice.",
+          "requestFields": [
+            { "name": "invoiceId", "type": "string" },
+            { "name": "amount", "type": "number" }
+          ],
+          "responseFields": [{ "name": "refund", "type": "object" }]
         }
       ],
-      "createdAt": "2026-07-05T05:25:50.303Z"
+      "imageUrl": "https://loremflickr.com/600/360/invoice,accounting?lock=2"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000003",
+      "name": "Weatherly",
+      "abstract": "Global weather forecasts, severe-weather alerts, and historical climate data for 40,000 cities.",
+      "createdAt": "2026-02-10T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000a1",
+          "method": "GET",
+          "path": "/forecast",
+          "description": "Returns a multi-day forecast for a location.",
+          "requestFields": [
+            { "name": "lat", "type": "number" },
+            { "name": "lon", "type": "number" }
+          ],
+          "responseFields": [{ "name": "forecast", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000a2",
+          "method": "GET",
+          "path": "/cities/:id/current",
+          "description": "Current conditions for a city.",
+          "requestFields": [],
+          "responseFields": [{ "name": "conditions", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000a3",
+          "method": "GET",
+          "path": "/history",
+          "description": "Historical climate data for a date range.",
+          "requestFields": [
+            { "name": "cityId", "type": "string" },
+            { "name": "from", "type": "string" },
+            { "name": "to", "type": "string" }
+          ],
+          "responseFields": [{ "name": "records", "type": "array" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/weather,sky?lock=3"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000004",
+      "name": "FitPulse",
+      "abstract": "Workout tracking, training plans, and progress analytics for athletes and gyms.",
+      "createdAt": "2026-02-18T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000b1",
+          "method": "GET",
+          "path": "/workouts",
+          "description": "Lists the user's logged workouts.",
+          "requestFields": [],
+          "responseFields": [{ "name": "workouts", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000b2",
+          "method": "POST",
+          "path": "/workouts",
+          "description": "Logs a new workout session.",
+          "requestFields": [
+            { "name": "type", "type": "string" },
+            { "name": "durationMinutes", "type": "number" },
+            { "name": "calories", "type": "number" }
+          ],
+          "responseFields": [{ "name": "workout", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000b3",
+          "method": "GET",
+          "path": "/progress",
+          "description": "Returns progress metrics over time.",
+          "requestFields": [],
+          "responseFields": [{ "name": "metrics", "type": "object" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/fitness,gym?lock=4"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000005",
+      "name": "Pantry",
+      "abstract": "Kitchen inventory, shopping lists, and recipe suggestions based on what you already have.",
+      "createdAt": "2026-03-02T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000c1",
+          "method": "GET",
+          "path": "/pantry",
+          "description": "Lists items currently in the pantry.",
+          "requestFields": [],
+          "responseFields": [{ "name": "items", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000c2",
+          "method": "POST",
+          "path": "/pantry",
+          "description": "Adds an item to the pantry.",
+          "requestFields": [
+            { "name": "name", "type": "string" },
+            { "name": "quantity", "type": "number" },
+            { "name": "unit", "type": "string" }
+          ],
+          "responseFields": [{ "name": "item", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000c3",
+          "method": "GET",
+          "path": "/recipes",
+          "description": "Suggests recipes you can make with items on hand.",
+          "requestFields": [],
+          "responseFields": [{ "name": "recipes", "type": "array" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/kitchen,food?lock=5"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000006",
+      "name": "BookNest",
+      "abstract": "A library catalog with lending, reading lists, and personalized recommendations.",
+      "createdAt": "2026-03-15T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000d1",
+          "method": "GET",
+          "path": "/books",
+          "description": "Searches the book catalog.",
+          "requestFields": [{ "name": "query", "type": "string" }],
+          "responseFields": [{ "name": "books", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000d2",
+          "method": "GET",
+          "path": "/books/:id",
+          "description": "Returns details for a single book.",
+          "requestFields": [],
+          "responseFields": [{ "name": "book", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000d3",
+          "method": "POST",
+          "path": "/reading-list",
+          "description": "Adds a book to the reading list.",
+          "requestFields": [{ "name": "bookId", "type": "string" }],
+          "responseFields": [{ "name": "success", "type": "boolean" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/books,library?lock=6"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000007",
+      "name": "FleetPin",
+      "abstract": "Real-time vehicle tracking, route history, and maintenance scheduling for fleets.",
+      "createdAt": "2026-04-01T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000e1",
+          "method": "GET",
+          "path": "/vehicles",
+          "description": "Lists all vehicles in the fleet.",
+          "requestFields": [],
+          "responseFields": [{ "name": "vehicles", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000e2",
+          "method": "GET",
+          "path": "/vehicles/:id/location",
+          "description": "Returns the current GPS location of a vehicle.",
+          "requestFields": [],
+          "responseFields": [{ "name": "location", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000e3",
+          "method": "POST",
+          "path": "/maintenance",
+          "description": "Schedules maintenance for a vehicle.",
+          "requestFields": [
+            { "name": "vehicleId", "type": "string" },
+            { "name": "date", "type": "string" },
+            { "name": "notes", "type": "string" }
+          ],
+          "responseFields": [{ "name": "ticket", "type": "object" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/truck,highway?lock=7"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000008",
+      "name": "PulseCRM",
+      "abstract": "Contacts, deals, and pipeline analytics for lightweight sales teams.",
+      "createdAt": "2026-04-20T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000f1",
+          "method": "GET",
+          "path": "/contacts",
+          "description": "Lists all contacts.",
+          "requestFields": [],
+          "responseFields": [{ "name": "contacts", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000f2",
+          "method": "POST",
+          "path": "/deals",
+          "description": "Creates a new deal in the pipeline.",
+          "requestFields": [
+            { "name": "contactId", "type": "string" },
+            { "name": "amount", "type": "number" },
+            { "name": "stage", "type": "string" }
+          ],
+          "responseFields": [{ "name": "deal", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000f3",
+          "method": "GET",
+          "path": "/pipeline",
+          "description": "Returns pipeline analytics grouped by stage.",
+          "requestFields": [],
+          "responseFields": [{ "name": "pipeline", "type": "object" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/business,handshake?lock=8"
+    },
+    {
+      "id": "c0000000-0000-4000-8000-000000000009",
+      "name": "EventHive",
+      "abstract": "Event creation, ticketing, and attendee management for organizers.",
+      "createdAt": "2026-05-05T09:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "c0000000-0000-4000-8000-0000000000g1",
+          "method": "GET",
+          "path": "/events",
+          "description": "Lists upcoming events.",
+          "requestFields": [],
+          "responseFields": [{ "name": "events", "type": "array" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000g2",
+          "method": "POST",
+          "path": "/events",
+          "description": "Creates a new event.",
+          "requestFields": [
+            { "name": "title", "type": "string" },
+            { "name": "date", "type": "string" },
+            { "name": "capacity", "type": "number" }
+          ],
+          "responseFields": [{ "name": "event", "type": "object" }]
+        },
+        {
+          "id": "c0000000-0000-4000-8000-0000000000g3",
+          "method": "GET",
+          "path": "/events/:id/attendees",
+          "description": "Lists attendees registered for an event.",
+          "requestFields": [],
+          "responseFields": [{ "name": "attendees", "type": "array" }]
+        }
+      ],
+      "imageUrl": "https://loremflickr.com/600/360/concert,event?lock=9"
     }
   ],
   "apiKeys": [
@@ -110,9 +352,7 @@
       "id": "7b938c1a-046f-4133-8d78-b306ea56c9a3",
       "name": "My Key",
       "key": "facet_sk_010c7604c7c346aba4a228b9058d28b9",
-      "appIds": [
-        "a1e11111-0000-4000-8000-000000000001"
-      ],
+      "appIds": ["a1e11111-0000-4000-8000-000000000001"],
       "expiresAt": "2026-07-08",
       "createdAt": "2026-07-05T04:02:27.908Z"
     }

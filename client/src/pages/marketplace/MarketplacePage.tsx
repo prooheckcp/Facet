@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { api } from "../../api/client";
 import type { MarketplaceApplication } from "../../api/types";
 import { TopNav } from "../../components/TopNav";
 import { usePageTitle } from "../../hooks/usePageTitle";
+
+const MotionLink = motion.create(Link);
 
 export function MarketplacePage() {
   usePageTitle("Marketplace");
@@ -52,30 +55,38 @@ export function MarketplacePage() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 20 }}>
           {apps.map((app) => (
-            <Link key={app.id} to={`/marketplace/${app.id}`} className="card" style={{ display: "block" }}>
+            <MotionLink key={app.id} to={`/marketplace/${app.id}`} className="app-card" whileHover={{ y: -6 }}>
+              <span className="app-card__ring" aria-hidden />
               {app.imageUrl?.trim() && (
-                <img
-                  src={app.imageUrl}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    height: 140,
-                    objectFit: "cover",
-                    borderRadius: 10,
-                    marginBottom: 14,
-                    display: "block",
-                  }}
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
-                />
+                <div className="app-card__cover">
+                  <img
+                    src={app.imageUrl}
+                    alt=""
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                </div>
               )}
-              <h3 style={{ margin: "0 0 8px" }}>{app.name}</h3>
-              <p style={{ color: "var(--text-muted)", margin: "0 0 16px", minHeight: 40 }}>{app.abstract}</p>
-              <span className="pill" style={{ background: "var(--surface)", color: "var(--text-dim)" }}>
-                {app.endpointCount} endpoint{app.endpointCount === 1 ? "" : "s"}
-              </span>
-            </Link>
+              <div className="app-card__body">
+                <h3 style={{ margin: "0 0 8px", fontSize: "1.15rem" }}>{app.name}</h3>
+                <p style={{ color: "var(--text-muted)", margin: "0 0 16px", minHeight: 40, fontSize: "0.95rem" }}>
+                  {app.abstract}
+                </p>
+                <span
+                  className="pill"
+                  style={{
+                    background: "rgba(16,185,129,0.14)",
+                    color: "#047857",
+                    marginTop: "auto",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  {app.endpointCount} endpoint{app.endpointCount === 1 ? "" : "s"}
+                </span>
+              </div>
+            </MotionLink>
           ))}
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { motion, useMotionValue, useSpring, useMotionTemplate } from "framer-motion";
@@ -6,6 +6,8 @@ import { TopNav } from "../components/TopNav";
 import { Typewriter } from "../components/Typewriter";
 import { Reveal, staggerContainer, staggerItem } from "../components/Reveal";
 import { usePageTitle } from "../hooks/usePageTitle";
+import { api } from "../api/client";
+import type { MarketplaceApplication } from "../api/types";
 
 const MotionLink = motion.create(Link);
 
@@ -168,57 +170,6 @@ function GeneratedStack() {
    `tint` colors the cover fallback + pill background; `pillText` is an
    AA-contrast shade of the same hue for the pill label; `img` is the
    card cover picture (a stand-in "generated app" screenshot). */
-const EXAMPLE_APPS = [
-  {
-    name: "TaskFlow API",
-    abstract: "Project & task management backend with boards, assignees, and due dates.",
-    endpoints: 14,
-    tint: "#a78bfa",
-    pillText: "#6d28d9",
-    img: "https://picsum.photos/seed/facet-taskflow/640/360",
-  },
-  {
-    name: "Weatherly",
-    abstract: "Global forecast and historical climate data across 40,000 cities.",
-    endpoints: 6,
-    tint: "#818cf8",
-    pillText: "#4338ca",
-    img: "https://picsum.photos/seed/facet-weatherly/640/360",
-  },
-  {
-    name: "InvoiceHub",
-    abstract: "Billing, invoicing, and payment reconciliation for small businesses.",
-    endpoints: 21,
-    tint: "#e879f9",
-    pillText: "#a21caf",
-    img: "https://picsum.photos/seed/facet-invoicehub/640/360",
-  },
-  {
-    name: "Fleetly",
-    abstract: "Vehicle tracking, maintenance schedules, and driver logs in real time.",
-    endpoints: 18,
-    tint: "#c084fc",
-    pillText: "#7e22ce",
-    img: "https://picsum.photos/seed/facet-fleetly/640/360",
-  },
-  {
-    name: "Pantry",
-    abstract: "Inventory and recipe API for kitchens — stock levels and shopping lists.",
-    endpoints: 9,
-    tint: "#a78bfa",
-    pillText: "#6d28d9",
-    img: "https://picsum.photos/seed/facet-pantry/640/360",
-  },
-  {
-    name: "PulseCRM",
-    abstract: "Contacts, deals, and pipeline analytics for lightweight sales teams.",
-    endpoints: 27,
-    tint: "#d946ef",
-    pillText: "#a21caf",
-    img: "https://picsum.photos/seed/facet-pulsecrm/640/360",
-  },
-];
-
 /* One API, many generated interfaces */
 const INTERFACES = [
   {
@@ -433,6 +384,24 @@ function HeroSpotlight({ children, style }: { children: ReactNode; style?: CSSPr
 
 export function LandingPage() {
   usePageTitle();
+
+  // Show 6 real applications from the marketplace as the landing examples.
+  const [exampleApps, setExampleApps] = useState<MarketplaceApplication[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .searchMarketplace("")
+      .then((apps) => {
+        if (!cancelled) setExampleApps(apps.slice(0, 6));
+      })
+      .catch(() => {
+        /* landing is marketing-only; ignore fetch errors */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div style={{ background: LIGHT.bg, color: LIGHT.text, minHeight: "100vh" }}>
       <TopNav />
@@ -541,20 +510,44 @@ export function LandingPage() {
           viewport={{ once: true, margin: "-60px" }}
           style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}
         >
-          {EXAMPLE_APPS.map((app) => (
-            <MotionLink key={app.name} variants={staggerItem} whileHover={{ y: -6 }} to="/marketplace" className="app-card">
+          {exampleApps.map((app) => (
+            <MotionLink
+              key={app.id}
+              variants={staggerItem}
+              whileHover={{ y: -6 }}
+              to={`/marketplace/${app.id}`}
+              className="app-card"
+            >
               <span className="app-card__ring" aria-hidden />
-              <div className="app-card__cover" style={{ background: `linear-gradient(135deg, ${app.tint}33, ${app.tint}14)` }}>
-                <img src={app.img} alt={`${app.name} preview`} loading="lazy" />
+              <div
+                className="app-card__cover"
+                style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.18), rgba(168,85,247,0.08))" }}
+              >
+                {app.imageUrl?.trim() && (
+                  <img
+                    src={app.imageUrl}
+                    alt={`${app.name} preview`}
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).style.display = "none";
+                    }}
+                  />
+                )}
               </div>
               <div className="app-card__body">
                 <h3 style={{ margin: "0 0 8px", fontSize: "1.15rem" }}>{app.name}</h3>
                 <p style={{ color: LIGHT.muted, margin: "0 0 18px", minHeight: 44, fontSize: "0.95rem" }}>{app.abstract}</p>
                 <span
                   className="pill"
-                  style={{ background: `${app.tint}22`, color: app.pillText, fontWeight: 700, marginTop: "auto", alignSelf: "flex-start" }}
+                  style={{
+                    background: "rgba(16,185,129,0.14)",
+                    color: "#047857",
+                    fontWeight: 700,
+                    marginTop: "auto",
+                    alignSelf: "flex-start",
+                  }}
                 >
-                  {app.endpoints} endpoints
+                  {app.endpointCount} endpoint{app.endpointCount === 1 ? "" : "s"}
                 </span>
               </div>
             </MotionLink>

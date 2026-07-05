@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import { api } from "../../api/client";
 import type { ApplicationDetail } from "../../api/types";
 import { TopNav } from "../../components/TopNav";
 import { MethodPill } from "../../components/MethodPill";
 import { usePageTitle } from "../../hooks/usePageTitle";
+import { staggerContainer, staggerItem } from "../../components/Reveal";
+
+const MotionLink = motion.create(Link);
 
 export function ApplicationDetailPage() {
   const { appId } = useParams<{ appId: string }>();
@@ -91,12 +95,15 @@ export function ApplicationDetailPage() {
                 e.g. "A kanban board grouped by status" or "A minimal list view focused on today's tasks."
               </p>
               <div className="field">
-                <textarea
-                  rows={4}
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  placeholder="Describe how you'd like to interact with this application…"
-                />
+                <div className="focus-ring-wrap">
+                  <span className="focus-ring" aria-hidden />
+                  <textarea
+                    rows={4}
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    placeholder="Describe how you'd like to interact with this application…"
+                  />
+                </div>
               </div>
               {error && <p style={{ color: "#f87171", fontSize: "0.9rem" }}>{error}</p>}
               <button className="btn btn-primary" onClick={handleBuild} disabled={building || !prompt.trim()}>
@@ -107,19 +114,23 @@ export function ApplicationDetailPage() {
             {app.builds.length > 0 && (
               <div className="card">
                 <h3 style={{ marginTop: 0 }}>Previous builds</h3>
-                {app.builds.map((b) => (
-                  <Link
-                    key={b.id}
-                    to={`/marketplace/${app.id}/view/${b.id}`}
-                    className="card"
-                    style={{ display: "block", marginBottom: 10, padding: 14 }}
-                  >
-                    <div style={{ fontSize: "0.9rem" }}>{b.prompt}</div>
-                    <div style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginTop: 4 }}>
-                      {new Date(b.createdAt).toLocaleString()}
-                    </div>
-                  </Link>
-                ))}
+                <motion.div variants={staggerContainer} initial="hidden" animate="show">
+                  {app.builds.map((b) => (
+                    <MotionLink
+                      key={b.id}
+                      variants={staggerItem}
+                      whileHover={{ x: 5 }}
+                      to={`/marketplace/${app.id}/view/${b.id}`}
+                      className="card"
+                      style={{ display: "block", marginBottom: 10, padding: 14 }}
+                    >
+                      <div style={{ fontSize: "0.9rem" }}>{b.prompt}</div>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-dim)", marginTop: 4 }}>
+                        {new Date(b.createdAt).toLocaleString()}
+                      </div>
+                    </MotionLink>
+                  ))}
+                </motion.div>
               </div>
             )}
           </div>

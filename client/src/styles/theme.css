@@ -146,6 +146,39 @@ button {
   }
 }
 
+/* Animated gradient focus ring — wraps an input so it lights up with a
+   flowing purple border when selected (e.g. the "Describe your interface" box). */
+.focus-ring-wrap {
+  position: relative;
+  border-radius: var(--radius-sm);
+  transition: box-shadow 0.25s ease;
+}
+
+.focus-ring-wrap:focus-within {
+  box-shadow: 0 10px 30px -12px rgba(124, 58, 237, 0.4);
+}
+
+.focus-ring {
+  position: absolute;
+  inset: -2px;
+  border-radius: calc(var(--radius-sm) + 2px);
+  padding: 2px;
+  background-image: var(--gradient-anim);
+  background-size: 220% 100%;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.focus-ring-wrap:focus-within .focus-ring {
+  opacity: 1;
+  animation: btn-gradient 4s linear infinite;
+}
+
 /* Typewriter blinking caret. */
 .tw-caret {
   display: inline-block;
