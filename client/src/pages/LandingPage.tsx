@@ -8,33 +8,6 @@ import { Reveal, staggerContainer, staggerItem } from "../components/Reveal";
 
 const MotionLink = motion.create(Link);
 
-/* Facet gem mark — the centered logo glyph */
-function FacetMark({ size = 88 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 100 100" fill="none" aria-hidden>
-      <defs>
-        <linearGradient id="facet-a" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#a78bfa" />
-          <stop offset="1" stopColor="#7c3aed" />
-        </linearGradient>
-        <linearGradient id="facet-b" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#ddd6fe" />
-          <stop offset="1" stopColor="#c4b5fd" />
-        </linearGradient>
-        <linearGradient id="facet-c" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#e879f9" />
-          <stop offset="1" stopColor="#a78bfa" />
-        </linearGradient>
-      </defs>
-      <path d="M50 6 L86 32 L50 94 Z" fill="url(#facet-a)" />
-      <path d="M50 6 L14 32 L50 94 Z" fill="url(#facet-b)" />
-      <path d="M50 6 L86 32 L64 32 Z" fill="url(#facet-c)" opacity="0.9" />
-      <path d="M50 6 L14 32 L36 32 Z" fill="url(#facet-c)" opacity="0.6" />
-      <path d="M14 32 L86 32 L50 94 Z" fill="url(#facet-a)" opacity="0.25" />
-    </svg>
-  );
-}
-
 const LIGHT = {
   bg: "#f6f5fc",
   card: "#ffffff",
@@ -460,7 +433,7 @@ function HeroSpotlight({ children, style }: { children: ReactNode; style?: CSSPr
 export function LandingPage() {
   return (
     <div style={{ background: LIGHT.bg, color: LIGHT.text, minHeight: "100vh" }}>
-      <TopNav light />
+      <TopNav />
 
       {/* ---------- HERO ---------- */}
       <HeroSpotlight
@@ -476,7 +449,11 @@ export function LandingPage() {
           style={{ paddingTop: 80, paddingBottom: 72, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}
         >
           {/* centered logo */}
-          <FacetMark size={96} />
+          <img
+            src="/MainLogo.png"
+            alt="Facet — One backend. Infinite interfaces."
+            style={{ width: "min(440px, 82%)", height: "auto", display: "block" }}
+          />
 
           <div
             className="pill"
@@ -698,7 +675,7 @@ export function LandingPage() {
             boxShadow: "0 30px 70px -40px rgba(88,60,180,0.4)",
           }}
         >
-          <FacetMark size={56} />
+          <img src="/IconLogo.png" alt="" style={{ height: 52, width: "auto", display: "inline-block" }} />
           <h2 style={{ fontSize: "clamp(1.8rem, 6vw, 2.4rem)", margin: "18px 0 12px", letterSpacing: "-0.02em" }}>
             Bring your API. <span className="gradient-text-light">Leave with an interface.</span>
           </h2>
@@ -727,8 +704,8 @@ export function LandingPage() {
           style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16, padding: 0 }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <FacetMark size={24} />
-            <span style={{ fontWeight: 700 }} className="gradient-text-light">Facet</span>
+            <img src="/IconLogo.png" alt="" style={{ height: 22, width: "auto", display: "block" }} />
+            <span style={{ fontWeight: 800, color: "var(--text)" }}>Facet</span>
           </div>
           <div style={{ color: "#6b6b82", fontSize: "0.9rem" }}>
             © 2026 Facet — Your API. Any interface.

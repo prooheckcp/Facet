@@ -44,7 +44,7 @@ export function SubscriptionTab() {
               {isCurrent && (
                 <span
                   className="pill"
-                  style={{ background: "rgba(96,165,250,0.15)", color: "#60a5fa", position: "absolute", top: 20, right: 20 }}
+                  style={{ background: "rgba(124,58,237,0.14)", color: "#6b21d6", position: "absolute", top: 20, right: 20 }}
                 >
                   Current
                 </span>

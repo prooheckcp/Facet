@@ -23,8 +23,9 @@ export function DashboardLayout() {
                   padding: "10px 14px",
                   borderRadius: 10,
                   fontSize: "0.95rem",
-                  color: isActive ? "#fff" : "var(--text-muted)",
-                  background: isActive ? "var(--surface-hover)" : "transparent",
+                  fontWeight: isActive ? 600 : 400,
+                  color: isActive ? "#6b21d6" : "var(--text-muted)",
+                  background: isActive ? "rgba(124,58,237,0.1)" : "transparent",
                 })}
               >
                 {tab.label}

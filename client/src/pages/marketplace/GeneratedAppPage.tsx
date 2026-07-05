@@ -27,7 +27,7 @@ export function GeneratedAppPage() {
         <Link to={`/marketplace/${appId}`} style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
           ← Back to application
         </Link>
-        <span className="pill" style={{ background: "rgba(96,165,250,0.12)", color: "#60a5fa" }}>
+        <span className="pill" style={{ background: "rgba(124,58,237,0.12)", color: "#6b21d6" }}>
           Facet generated preview
         </span>
       </div>
