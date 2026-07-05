@@ -17,26 +17,40 @@ function describeEndpoint(app: Application, endpointId?: string): string {
 
 function buildPrompt(app: Application, userPrompt: string): { system: string; user: string } {
   const system = [
-    "You are the Facet build agent. You generate a single, self-contained HTML document",
-    "(inline <style> and <script>, no external dependencies) that serves as a custom frontend",
-    "for a backend application. The frontend must communicate with the backend exclusively",
-    "through the registered API endpoints listed below, using relative fetch() calls to their paths.",
-    "Every capability exposed by the registered endpoints should remain reachable somewhere in the UI,",
-    "even while you tailor the layout/workflow to the user's request.",
+    "You are the Facet build agent. You generate a small MULTI-PAGE website — a set of self-contained",
+    "HTML files — that serves as a custom frontend for a backend application.",
+    "",
+    "OUTPUT FORMAT — respond with a single JSON object of EXACTLY this shape:",
+    '{ "files": { "index.html": "<!doctype html>...", "another-page.html": "<!doctype html>..." } }.',
+    "The keys are file names and the values are the complete HTML for each file.",
+    '"index.html" is REQUIRED — it is the entry page. Add more .html pages whenever the interface benefits',
+    "from separate views (for example a list page plus a create/detail page). Prefer 2 to 4 pages.",
+    "Each HTML file must be a COMPLETE, standalone document with its own inline <style> and <script>.",
+    "Do not rely on any external files, CDNs, frameworks, or shared stylesheets.",
+    "",
+    "NAVIGATION — this is critical and is what usually breaks, so follow it exactly:",
+    'link between pages using ONLY relative file names, e.g. <a href="tasks.html">Tasks</a> or, in JS,',
+    "location.href = 'tasks.html'. All files are served together from one directory, so a bare relative",
+    'name like "index.html" or "tasks.html" resolves correctly. NEVER use a leading slash, an absolute',
+    "URL, or a <base> tag for navigation. Every link or button that navigates MUST point to a file you",
+    "actually include in the files object — no dead ends. Provide a way back to index.html from every page.",
+    "",
+    "BACKEND — the frontend talks to the backend only through the registered API endpoints listed below,",
+    "using relative fetch() calls to their paths. Keep every registered capability reachable in the UI.",
     "",
     "DESIGN BAR — the result must look modern, polished, and premium, like a well-designed 2025 SaaS product:",
-    "use a cohesive color palette (tasteful gradients and accent colors), generous whitespace, a clear visual",
-    "hierarchy, rounded corners, soft shadows/depth, and clean modern typography. Favor a refined light or dark",
-    "theme done well over a plain default-styled page. Never ship an unstyled or barebones HTML page.",
+    "a cohesive color palette (tasteful gradients and accents), generous whitespace, clear visual hierarchy,",
+    "rounded corners, soft shadows/depth, and clean modern typography, with a consistent look across all pages.",
+    "Never ship an unstyled or barebones page.",
     "",
-    "MOTION — bring the interface to life with tasteful animation and micro-interactions, using ONLY CSS and",
-    "vanilla JS (CSS transitions/keyframes, requestAnimationFrame): smooth hover and focus states on interactive",
-    "elements, subtle entrance/reveal animations as content loads, animated loading indicators (spinners/skeletons)",
-    "while fetch() is in flight, and gentle feedback on user actions (button presses, successes, errors).",
-    "Keep motion smooth, fast, and purposeful — polished, never gratuitous or distracting. Respect",
-    "prefers-reduced-motion. Make the layout fully responsive and keep it accessible.",
+    "MOTION — bring the UI to life with tasteful animation using ONLY CSS and vanilla JS (transitions, keyframes,",
+    "requestAnimationFrame): subtle entrance/reveal animations as content loads, animated loading indicators while",
+    "fetch() is in flight, and gentle feedback on actions. IN PARTICULAR, EVERY button and clickable control MUST",
+    "have visible animated states — a smooth hover effect AND a distinct pressed/active effect (animate color,",
+    "scale, shadow, or a subtle ripple). Keep motion smooth, fast, and purposeful, never distracting, and respect",
+    "prefers-reduced-motion. Make every page fully responsive and accessible.",
     "",
-    "Respond with ONLY the raw HTML document — no markdown fences, no commentary.",
+    "Respond with ONLY the JSON object — no markdown fences, no commentary.",
   ].join(" ");
 
   const user = [
@@ -153,10 +167,23 @@ export async function improvePrompt(rawPrompt: string, app?: Application): Promi
   return improved && improved.length ? improved : rawPrompt;
 }
 
-export async function generateFrontend(app: Application, userPrompt: string): Promise<string> {
+/** Restrict a model-supplied file name to a safe, flat file within the build dir. */
+function sanitizeFileName(name: string): string {
+  const base = name.split(/[\\/]/).pop() ?? "";
+  return base.replace(/[^a-zA-Z0-9._-]/g, "").slice(0, 64);
+}
+
+/**
+ * Generates the frontend as a set of named HTML files ({ "index.html": ..., ... }).
+ * Returns a single placeholder index.html if no API key is configured or the
+ * model response can't be parsed.
+ */
+export async function generateSite(app: Application, userPrompt: string): Promise<Record<string, string>> {
+  const fallback = { "index.html": placeholderHtml(app, userPrompt) };
+
   const apiKey = process.env.OPENAI_API_KEY?.trim();
   if (!apiKey) {
-    return placeholderHtml(app, userPrompt);
+    return fallback;
   }
 
   const client = new OpenAI({ apiKey });
@@ -164,16 +191,43 @@ export async function generateFrontend(app: Application, userPrompt: string): Pr
 
   const completion = await client.chat.completions.create({
     model: "gpt-4o-mini",
+    response_format: { type: "json_object" },
     messages: [
       { role: "system", content: system },
       { role: "user", content: user },
     ],
   });
 
-  const html = completion.choices[0]?.message?.content?.trim();
-  if (!html) {
-    return placeholderHtml(app, userPrompt);
+  const raw = completion.choices[0]?.message?.content?.trim();
+  if (!raw) return fallback;
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return fallback;
   }
 
-  return html.replace(/^```html\s*/i, "").replace(/^```\s*/, "").replace(/```\s*$/, "");
+  const source =
+    parsed && typeof parsed === "object" && "files" in parsed && typeof (parsed as any).files === "object"
+      ? (parsed as any).files
+      : parsed;
+
+  if (!source || typeof source !== "object") return fallback;
+
+  const files: Record<string, string> = {};
+  for (const [name, content] of Object.entries(source as Record<string, unknown>)) {
+    const safe = sanitizeFileName(name);
+    if (safe && typeof content === "string" && content.trim()) {
+      files[safe] = content;
+    }
+  }
+
+  if (!files["index.html"]) {
+    const firstHtml = Object.keys(files).find((f) => f.endsWith(".html"));
+    if (firstHtml) files["index.html"] = files[firstHtml];
+    else return fallback;
+  }
+
+  return files;
 }

@@ -3,6 +3,6 @@ dist/
 build/
 .env
 *.log
-server/data/generated/*.html
+server/data/generated/
 .DS_Store
 .gstack/

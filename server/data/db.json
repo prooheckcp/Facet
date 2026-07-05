@@ -621,6 +621,20 @@
       "prompt": "Design a sleek and minimalistic interface for the \"FitPulse\" gym application, focusing on workout tracking, training plans, and progress analytics for athletes and gyms. Utilize a vibrant green color palette to create a fresh and energetic feel. Ensure the layout is user-friendly, with intuitive navigation and visually engaging elements for a polished and modern experience.",
       "htmlFile": "generated/8253e960-1335-405c-9e62-f65a9e7ea6a1.html",
       "createdAt": "2026-07-05T06:20:26.285Z"
+    },
+    {
+      "id": "944111e5-944a-4e03-82b8-1f20a31b997b",
+      "applicationId": "a1e11111-0000-4000-8000-000000000001",
+      "prompt": "A clean multi-page task manager: a home dashboard, a page listing all tasks, and a page to create a new task. Navigation between them via buttons.",
+      "htmlFile": "generated/944111e5-944a-4e03-82b8-1f20a31b997b/index.html",
+      "createdAt": "2026-07-05T06:27:15.529Z"
+    },
+    {
+      "id": "1dbec770-9fee-4fdf-a73a-862f976b1101",
+      "applicationId": "c0000000-0000-4000-8000-000000000004",
+      "prompt": "Create a sleek and modern gym application for \"FitPulse\" that features a user-friendly layout inspired by JeFit. The interface should include workout tracking, customizable training plans, and comprehensive progress analytics for athletes and gyms. Ensure the design is visually polished and incorporates tasteful animations for an engaging user experience.",
+      "htmlFile": "generated/1dbec770-9fee-4fdf-a73a-862f976b1101/index.html",
+      "createdAt": "2026-07-05T06:30:30.060Z"
     }
   ]
 }

@@ -1,18 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { api } from "../../api/client";
 import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function GeneratedAppPage() {
   const { appId, buildId } = useParams<{ appId: string; buildId: string }>();
   usePageTitle("Generated app");
-  const [html, setHtml] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!buildId) return;
-    api.getGeneratedHtml(buildId).then(setHtml).catch((err) => setError(err.message));
-  }, [buildId]);
+  // Load the build as a directory URL (trailing slash) so the generated pages
+  // can link to one another with relative hrefs and actually navigate.
+  const src = buildId ? `/api/generated/${buildId}/` : "";
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
@@ -35,13 +30,11 @@ export function GeneratedAppPage() {
       </div>
 
       <div style={{ flex: 1 }}>
-        {error && <p style={{ color: "#f87171", padding: 24 }}>{error}</p>}
-        {!error && !html && <p style={{ color: "var(--text-muted)", padding: 24 }}>Loading generated app…</p>}
-        {html && (
+        {src && (
           <iframe
             title="Generated application"
-            srcDoc={html}
-            sandbox="allow-scripts allow-forms"
+            src={src}
+            sandbox="allow-scripts allow-forms allow-popups"
             style={{ width: "100%", height: "100%", border: "none", background: "#fff" }}
           />
         )}
