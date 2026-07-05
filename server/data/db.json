@@ -1,0 +1,108 @@
+{
+  "applications": [
+    {
+      "id": "a1e11111-0000-4000-8000-000000000001",
+      "name": "TaskFlow",
+      "abstract": "A task management application for teams.",
+      "createdAt": "2026-01-01T00:00:00.000Z",
+      "endpoints": [
+        {
+          "id": "e1e11111-0000-4000-8000-000000000001",
+          "method": "GET",
+          "path": "/tasks",
+          "description": "Returns all tasks assigned to the current user.",
+          "requestFields": [],
+          "responseFields": [
+            {
+              "name": "tasks",
+              "type": "array"
+            }
+          ]
+        },
+        {
+          "id": "e1e11111-0000-4000-8000-000000000002",
+          "method": "POST",
+          "path": "/tasks",
+          "description": "Creates a new task.",
+          "requestFields": [
+            {
+              "name": "title",
+              "type": "string"
+            },
+            {
+              "name": "dueDate",
+              "type": "string"
+            },
+            {
+              "name": "assigneeId",
+              "type": "string"
+            }
+          ],
+          "responseFields": [
+            {
+              "name": "task",
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "id": "e1e11111-0000-4000-8000-000000000003",
+          "method": "PATCH",
+          "path": "/tasks/:id",
+          "description": "Updates the status or details of an existing task.",
+          "requestFields": [
+            {
+              "name": "status",
+              "type": "string"
+            },
+            {
+              "name": "title",
+              "type": "string"
+            }
+          ],
+          "responseFields": [
+            {
+              "name": "task",
+              "type": "object"
+            }
+          ]
+        },
+        {
+          "id": "e1e11111-0000-4000-8000-000000000004",
+          "method": "DELETE",
+          "path": "/tasks/:id",
+          "description": "Deletes a task.",
+          "requestFields": [],
+          "responseFields": [
+            {
+              "name": "success",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "apiKeys": [
+    {
+      "id": "7b938c1a-046f-4133-8d78-b306ea56c9a3",
+      "name": "My Key",
+      "key": "facet_sk_010c7604c7c346aba4a228b9058d28b9",
+      "appIds": [
+        "a1e11111-0000-4000-8000-000000000001"
+      ],
+      "expiresAt": "2026-07-08",
+      "createdAt": "2026-07-05T04:02:27.908Z"
+    }
+  ],
+  "currentSubscriptionTier": "pro",
+  "generatedApps": [
+    {
+      "id": "31310391-499f-40f1-9dd8-be1c0d321017",
+      "applicationId": "a1e11111-0000-4000-8000-000000000001",
+      "prompt": "Make it pink",
+      "htmlFile": "generated/31310391-499f-40f1-9dd8-be1c0d321017.html",
+      "createdAt": "2026-07-05T04:02:50.025Z"
+    }
+  ]
+}
