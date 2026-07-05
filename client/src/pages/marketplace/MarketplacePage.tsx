@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { api } from "../../api/client";
 import type { MarketplaceApplication } from "../../api/types";
 import { TopNav } from "../../components/TopNav";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function MarketplacePage() {
+  usePageTitle("Marketplace");
   const [search, setSearch] = useState("");
   const [apps, setApps] = useState<MarketplaceApplication[]>([]);
   const [loading, setLoading] = useState(true);

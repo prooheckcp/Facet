@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 type Mode = "login" | "register";
 
@@ -14,6 +15,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
   }
 
   const isLogin = mode === "login";
+  usePageTitle(isLogin ? "Log in" : "Register");
 
   return (
     <div

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../../api/client";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function GeneratedAppPage() {
   const { appId, buildId } = useParams<{ appId: string; buildId: string }>();
+  usePageTitle("Generated app");
   const [html, setHtml] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 

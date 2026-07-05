@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../api/client";
 import type { SubscriptionTier } from "../../api/types";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function SubscriptionTab() {
+  usePageTitle("Subscription");
   const [tiers, setTiers] = useState<SubscriptionTier[]>([]);
   const [current, setCurrent] = useState<SubscriptionTier | null>(null);
   const [switching, setSwitching] = useState(false);

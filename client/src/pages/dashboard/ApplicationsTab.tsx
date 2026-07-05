@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../api/client";
 import type { Application } from "../../api/types";
-import { IconEye } from "../../components/icons";
+import { usePageTitle } from "../../hooks/usePageTitle";
+import { IconEye, IconEdit, IconTrash } from "../../components/icons";
 
 export function ApplicationsTab() {
+  usePageTitle("Applications");
   const [apps, setApps] = useState<Application[]>([]);
   const [creating, setCreating] = useState(false);
   const [name, setName] = useState("");
@@ -88,10 +90,20 @@ export function ApplicationsTab() {
                 <IconEye />
                 View
               </Link>
-              <Link to={`/dashboard/applications/${app.id}`} className="btn">
+              <Link
+                to={`/dashboard/applications/${app.id}`}
+                className="btn"
+                style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <IconEdit />
                 Edit
               </Link>
-              <button className="btn btn-danger" onClick={() => handleDelete(app.id)}>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete(app.id)}
+                style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+              >
+                <IconTrash />
                 Delete
               </button>
             </div>

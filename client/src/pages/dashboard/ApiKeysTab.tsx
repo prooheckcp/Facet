@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../../api/client";
 import type { Application, ApiKey } from "../../api/types";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function ApiKeysTab() {
+  usePageTitle("API Keys");
   const [keys, setKeys] = useState<ApiKey[]>([]);
   const [apps, setApps] = useState<Application[]>([]);
   const [creating, setCreating] = useState(false);

@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useMotionTemplate } from "framer-mot
 import { TopNav } from "../components/TopNav";
 import { Typewriter } from "../components/Typewriter";
 import { Reveal, staggerContainer, staggerItem } from "../components/Reveal";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 const MotionLink = motion.create(Link);
 
@@ -431,6 +432,7 @@ function HeroSpotlight({ children, style }: { children: ReactNode; style?: CSSPr
 }
 
 export function LandingPage() {
+  usePageTitle();
   return (
     <div style={{ background: LIGHT.bg, color: LIGHT.text, minHeight: "100vh" }}>
       <TopNav />

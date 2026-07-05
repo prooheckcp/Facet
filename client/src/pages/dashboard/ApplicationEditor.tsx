@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { api } from "../../api/client";
 import type { Application, Endpoint, EndpointField, HttpMethod } from "../../api/types";
 import { MethodPill } from "../../components/MethodPill";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 const METHODS: HttpMethod[] = ["GET", "POST", "PUT", "PATCH", "DELETE"];
 
@@ -141,6 +142,7 @@ function EndpointEditor({
 export function ApplicationEditor() {
   const { appId } = useParams<{ appId: string }>();
   const [app, setApp] = useState<Application | null>(null);
+  usePageTitle(app?.name ? `Edit ${app.name}` : "Edit application");
   const [saving, setSaving] = useState(false);
   const [savedAt, setSavedAt] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);

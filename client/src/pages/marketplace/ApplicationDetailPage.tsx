@@ -4,11 +4,13 @@ import { api } from "../../api/client";
 import type { ApplicationDetail } from "../../api/types";
 import { TopNav } from "../../components/TopNav";
 import { MethodPill } from "../../components/MethodPill";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export function ApplicationDetailPage() {
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const [app, setApp] = useState<ApplicationDetail | null>(null);
+  usePageTitle(app?.name ?? "Application");
   const [prompt, setPrompt] = useState("");
   const [building, setBuilding] = useState(false);
   const [error, setError] = useState<string | null>(null);
